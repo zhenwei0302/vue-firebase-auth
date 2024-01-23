@@ -1,16 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+   <router-view />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      user: null
+    };
+  },
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      this.user = user;
+    });
   }
+
 }
 </script>
 
