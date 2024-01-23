@@ -1,19 +1,23 @@
 <template>
-    <div v-if="showAlert" class="alert alert-danger mt-3" role="alert">
+    <div v-if="showAlert" class="alert alert-danger" role="alert">
       Please fill in all the required fields.
     </div>
 
+    <div  v-if="showSuccess" class="alert alert-success" role="alert">
+       Submitted successfully !
+    </div>
+
     <div class="mx-5">
-        <h3 class="mb-5" style="text-align:left">Personal Information</h3>
+        <h3 class="mt-3 mb-5" style="text-align:left">Personal Information</h3>
         <form class="row g-3" @submit.prevent="submitForm">
             <div class="col-md-6">
-            <label for="inputName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="inputName" v-model="form.userName">
+            <label for="inputName" class="form-label">*Name</label>
+            <input type="text" class="form-control" :class="{ 'empty-input': isInputEmpty('userName') }" id="inputName" v-model="form.userName">
             </div>
 
             <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail4" v-model="form.userEmail">
+            <label for="inputEmail4" class="form-label">*Email</label>
+            <input type="email" class="form-control" id="inputEmail4" :class="{ 'empty-input': isInputEmpty('userEmail') }" v-model="form.userEmail">
             </div>
 
             <div class="col-12">
@@ -59,6 +63,7 @@ export default{
     data(){
         return{
             showAlert: false,
+            showSuccess: false,
             form:{
                 userName: '',
                 userEmail:'',
@@ -70,9 +75,23 @@ export default{
             } 
         }
     },
-    method:{
+    methods:{
         submitForm() {
-         console.log('Form submitted',this.form);   
+            //const areEmptyForm = (obj) => Object.entries(obj).every(([key, value]) => key === 'userState' || value === '');
+            //const submitData = JSON.parse(JSON.stringify(this.form));
+
+            if(this.form.userName === '' || this.form.userEmail === '' ){
+                this.showAlert = true;
+                this.showSuccess = false;
+            }
+            else{
+                this.showAlert = false;
+                this.showSuccess = true;
+            }
+
+        },
+        isInputEmpty(fieldName) {
+            return this.form[fieldName].trim() === '';
         },
     },
     computed: {
@@ -86,3 +105,9 @@ export default{
 
 }
 </script>
+
+<style>
+.empty-input {
+  border: 2px solid red; /* Add your preferred styling for highlighting the empty input */
+}
+</style>
