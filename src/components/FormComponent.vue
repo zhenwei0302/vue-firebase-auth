@@ -38,8 +38,7 @@
             <div class="col-md-4">
             <label for="inputState" class="form-label">State</label>
             <select id="inputState" class="form-select"  v-model="form.userState">
-                <option selected>Kuala Lumpur</option>
-                <option>Selangor</option>
+                <option v-for="option in optionsData" :key="option.value" :value="option.value">{{ option.label }}</option>
             </select>
             </div>
 
@@ -57,11 +56,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { optionsData } from '../enum/options'
 
 export default{
     name:'FormComponent',
     data(){
         return{
+            optionsData,
             showAlert: false,
             showSuccess: false,
             form:{
